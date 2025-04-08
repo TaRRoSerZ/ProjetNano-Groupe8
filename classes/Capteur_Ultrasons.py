@@ -1,25 +1,18 @@
-from Capteur import Capteur
+from classes.Capteur import Capteur
+from gpiozero import DistanceSensor
 
 class Capteur_Ultrasons(Capteur):
-    """
-    Classe implémentant le fonctionnement des capteurs à ultrasons.
-
-    Attributs :
-
-    nom : Nom du capteur
-
-    pin_echo : pin servant à la réception
-
-    pin_trig : pin servant à l'envoie du signal
-    """
     def __init__(self, nom, pin_echo, pin_trig):
         super().__init__(nom)
+        self._sensor = DistanceSensor(echo=pin_echo, trigger=pin_trig, max_distance=4)
         self._pin_echo = pin_echo
         self._pin_trig = pin_trig
 
-
-    def lire_valeur(self):
-        pass
-
-
-
+    def lire_donnee(self):
+        try:
+            distance = self._sensor.distance
+            if distance <= 0.02:
+                return None
+            return distance
+        except Exception as e:
+            print("erreur : " + str(e))
