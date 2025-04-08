@@ -1,57 +1,72 @@
-class Voiture:
-    """
-    La classe voiture représente la classe principale qui sera instanciée lors du lancement de la voiture
-    elle permet de gérer toutes les actions réalisables par la voiture
-    """
 
-    def __init__(self, nom, nombre_tour):
+
+class Voiture() :
+    def __init__(self, nom:str) :
         self._nom = nom
-        self._nombre_tour = nombre_tour
-        self._moteurs = {}
-        self._capteurs = {}
+        self._vitesse = 0
+        self._direction = 0
+        self._etat_batterie = 0.0
+        self._capteurs = []
+        self._pont_h = None
+        self._servo_moteur = None
+        self._batterie = None
+        self._etat_voiture = "arret"
 
-    def __str__(self):
-        return self.nom + " " + self.nombre_tour
+        @property
+        def nom(self) :
+            return self._nom
 
+        @property
+        def vitesse(self) :
+            return self._vitesse
 
-    @property
-    def nom(self):
-        return self._nom
+        @property
+        def direction(self) :
+            return self._direction
 
-    @property
-    def nombre_tour(self):
-        return self._nombre_tour
+        @property
+        def etat_batterie(self) :
+            return self._etat_batterie
 
-    @nombre_tour.setter
-    def nombre_tour(self, nombre_tour):
-        self._nombre_tour = nombre_tour
+        @property
+        def capteurs(self) :
+            return self._capteurs
 
-    @property
-    def moteurs(self):
-        return self._moteurs
+        @property
+        def pont_h(self) :
+            return self._pont_h
 
+        @property
+        def servo_moteur(self) :
+            return self._servo_moteur
 
-    @property
-    def capteurs(self):
-        return self._capteurs
+        @property
+        def batterie(self) :
+            return self._batterie
 
+        @property
+        def etat_voiture(self) :
+            return self._etat_voiture
 
-    def lire_valeur(self):
+    def __str__(self) :
+        return f"Voiture : {self.nom} \n Etat : {self.etat_voiture}"
+
+    def demarrer(self):
         pass
 
-    def avancer(self):
+    def arreter(self):
         pass
 
-    def tourner(self, direction):
+    def se_deplacer(self):
         pass
 
-    def arret(self):
+    def mettre_a_jour_position(self):
         pass
 
-    def calculer_vitesse(self):
+    def eviter_obstacle(self):
         pass
 
-    def mode_test(self):
+    def verifier_batterie(self):
         pass
 
 
