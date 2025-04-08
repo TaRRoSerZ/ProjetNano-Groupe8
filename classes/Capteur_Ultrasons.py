@@ -8,6 +8,15 @@ class Capteur_Ultrasons(Capteur):
         self._pin_echo = pin_echo
         self._pin_trig = pin_trig
 
+
+    @property
+    def sensor(self):
+        return self._sensor
+
+    @sensor.setter
+    def sensor(self, value):
+        self._sensor = value
+
     def lire_donnee(self):
         try:
             distance = self._sensor.distance
