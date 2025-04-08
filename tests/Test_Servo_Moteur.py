@@ -16,7 +16,6 @@ class Test_Servo_Moteur(unittest.TestCase):
 
     @patch('classes.Servo_Moteur.AngularServo')
     def test_angle_hors_valeur_acceptable(self, AngularServo):
-        mock_servo = AngularServo.return_value
         servo = Servo_Moteur("capteur", 4)
 
         with self.assertRaises(ValueError):
