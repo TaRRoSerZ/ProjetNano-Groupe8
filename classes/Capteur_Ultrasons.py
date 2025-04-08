@@ -1,7 +1,8 @@
 from classes.Capteur import Capteur
 from gpiozero import DistanceSensor
 import logging
-from .Loggeur import setupLoggeur
+from Loggeur import setupLoggeur, lireLogs
+
 
 setupLoggeur()
 
@@ -48,3 +49,5 @@ class Capteur_Ultrasons(Capteur):
         except Exception as e:
             logging.error(f"Erreur lors de la lecture du capteur {self.nom}: {str(e)}.")
             raise
+
+lireLogs()

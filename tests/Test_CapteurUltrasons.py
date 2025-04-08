@@ -1,9 +1,14 @@
+import sys
+import os
 import unittest
 import logging
 from unittest.mock import patch, Mock
-from classes.Capteur_Ultrasons import Capteur_Ultrasons
-from classes.Loggeur import setupLoggeur
 
+# Ajouter le répertoire 'classes' au chemin d'importation
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'classes')))
+
+from classes.Capteur_Ultrasons import Capteur_Ultrasons
+from classes.Loggeur import setupLoggeur  # L'import de Loggeur fonctionne maintenant
 
 class Test_CapteurUltrasons(unittest.TestCase):
     """
@@ -14,11 +19,7 @@ class Test_CapteurUltrasons(unittest.TestCase):
        cas suivants :
        - Lorsque la distance mesurée est trop petite.
        - Lorsque la distance mesurée est normale.
-
-       Méthodes de test :
-           test_si_distance_trop_petite() : Teste si `lire_donnee()` retourne `None` pour une distance trop petite.
-           test_si_distance_normale() : Teste si `lire_donnee()` retourne la distance correcte pour une mesure normale.
-           test_si_distance_absurde() :  Teste si `lire_donnee()` retourne une valeur incorrecte ou absurde.
+       - Quand une valeur absurde est donnée.
        """
 
     @patch('classes.Capteur_Ultrasons.DistanceSensor')
@@ -48,8 +49,7 @@ class Test_CapteurUltrasons(unittest.TestCase):
         # Vérifier que la ValueError est bien levée et capturée
         with self.assertRaises(ValueError):
             capteur = Capteur_Ultrasons("Capteur 1", 4, 2)
-            capteur.lire_donnee()  # Appel de la méthode qui devrait lever une exception
-
+            capteur.lire_donnee()
 
 if __name__ == '__main__':
     unittest.main()
