@@ -1,4 +1,6 @@
 from Capteur import Capteur
+from gpiozero import DigitalInputDevice
+from time import sleep
 
 class Capteur_IR(Capteur):
     """
@@ -13,8 +15,12 @@ class Capteur_IR(Capteur):
     def __init__(self, nom, pin_signal: int):
         super().__init__(nom)
         self._pin_signal = pin_signal
+        self._capteur = DigitalInputDevice(pin_signal)
 
 
-    def lire_valeur(self):
-        pass
+    def lire_donnee(self):
+        return not self._capteur.is_active  # True si obstacle (LOW)
+
+
+
 
