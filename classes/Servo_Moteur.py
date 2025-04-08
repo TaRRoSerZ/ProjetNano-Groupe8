@@ -1,8 +1,8 @@
-from moteur import Moteur
 
-class Moteur_Servo(Moteur):
+
+class Servo_Moteur():
     """
-    Classe représentant un moteur servo.
+    Classe représentant un servo moteur.
 
     Attributs:
 
@@ -13,12 +13,15 @@ class Moteur_Servo(Moteur):
 
     - actionner(donnees): Actionne le moteur servo avec les données fournies.
     """
-    def __init__(self,nom,pins):
-        super().__init__(nom,pins)
+    def __init__(self,nom,pins,angle):
+        self._nom = nom
+        self._pins = pins
+        self._angle = angle
 
-    def actionner(self,donnees):
+    def regler_angle(self,angle):
         """
         Actionne le moteur servo avec les données fournies.
         """
         # Code pour actionner le moteur servo
         pass
+
