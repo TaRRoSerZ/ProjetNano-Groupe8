@@ -1,5 +1,9 @@
 from classes.Capteur import Capteur
 from gpiozero import DistanceSensor
+import logging
+from .Loggeur import setupLoggeur
+
+setupLoggeur()
 
 class Capteur_Ultrasons(Capteur):
     """
@@ -25,20 +29,22 @@ class Capteur_Ultrasons(Capteur):
         self._pin_echo = pin_echo
         self._pin_trig = pin_trig
 
-
-    @property
-    def sensor(self):
-        return self._sensor
-
-    @sensor.setter
-    def sensor(self, value):
-        self._sensor = value
-
     def lire_donnee(self):
         try:
             distance = self._sensor.distance
+            if not isinstance(distance, (int, float)):
+                raise ValueError(f"Distance invalide reçue: {distance}")
+
             if distance <= 0.02:
+                logging.warning(f"Distance trop petite pour le capteur {self.nom}: {distance} m.")
                 return None
+
+            logging.info(f"Distance mesurée pour le capteur {self.nom}: {distance} m.")
             return distance
+        except ValueError as e:
+            logging.error(f"Erreur de valeur lors de la lecture du capteur {self.nom}: {str(e)}.")
+            raise
+
         except Exception as e:
-            print("erreur : " + str(e))
+            logging.error(f"Erreur lors de la lecture du capteur {self.nom}: {str(e)}.")
+            raise
