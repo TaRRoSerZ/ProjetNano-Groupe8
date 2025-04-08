@@ -11,6 +11,12 @@ class Servo_Moteur:
         angle (float): Angle courant (-90 à 90°)
         min_pulse (float): Largeur impulsion min (ms, défaut 0.5)
         max_pulse (float): Largeur impulsion max (ms, défaut 2.5)
+
+    Méthodes:
+
+        regler_angle(angle):
+            Règle l'angle du servo (-90 à 90°)
+
     """
 
     def __init__(self, nom, pin, angle=0, min_pulse=0.5, max_pulse=2.5):
@@ -38,14 +44,6 @@ class Servo_Moteur:
             return angle
         raise ValueError("Angle doit être entre -90 et 90 degrés")
 
-    def detacher(self):
-        """Désactive le servo"""
-        self._servo.detach()
 
 
-# Exemple d'utilisation
-if __name__ == '__main__':
-    servo = Servo_Moteur(nom="Servo1", pin=17)
-    servo.regler_angle(45)  # Tourne à 45°
-    servo.regler_angle(-30)  # Tourne à -30°
-    servo.detacher()
+
