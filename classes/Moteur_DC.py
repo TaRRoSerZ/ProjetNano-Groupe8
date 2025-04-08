@@ -19,17 +19,38 @@ class Moteur_DC():
         -changer_direction :Change la direction du moteur DC.
         :param direction:
         """
+
     def __init__(self,nom,pins,vitesse,direction):
         self._noms = nom
         self._pins = pins
         self._vitesse = vitesse
         self._direction = direction
 
-    def regler_vitesse(self,vitesse):
+
+    def regler_vitesse(self, vitesse):
+        """Règle la vitesse (0-100%)"""
+        if 0 <= vitesse <= 100:
+            self._vitesse = vitesse
+            self._en.value = vitesse / 100
+        else:
+            raise ValueError("Vitesse doit être entre 0 et 100")
 
 
-        pass
+    def changer_direction(self, direction):
+        """Change la direction"""
+        if direction in ['avant', 'arrière']:
+            self._direction = direction
+            if direction == 'avant':
+                self._in1.on()
+                self._in2.off()
+            else:
+                self._in1.off()
+                self._in2.on()
+        else:
+            raise ValueError("Direction doit être 'avant' ou 'arrière'")
 
-    def changer_direction(self,direction):
-
-        pass
+    def arreter(self):
+        """Arrête le moteur"""
+        self._in1.off()
+        self._in2.off()
+        self._en.value = 0
