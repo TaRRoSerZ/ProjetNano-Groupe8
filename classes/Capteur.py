@@ -7,23 +7,16 @@ class Capteur(ABC):
     Attributs :
 
     nom : Nom du capteur
-
-    pins : pins utilisées par le capteur
     """
-    def __init__(self, nom: str, pins: dict):
+    def __init__(self, nom: str):
         self._nom = nom
-        self._pins = pins
+
 
     @abstractmethod
-    def lire_valeur(self):
+    def lire_donnee(self):
         pass
 
     @property
     def nom(self):
         """getter de nom"""
         return self._nom
-
-    @property
-    def pins(self):
-        """getter de pins"""
-        return self._pins

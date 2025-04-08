@@ -8,12 +8,18 @@ class Capteur_Ultrasons(Capteur):
 
     nom : Nom du capteur
 
-    pins : pins utilisées par le capteur
+    pin_echo : pin servant à la réception
+
+    pin_trig : pin servant à l'envoie du signal
     """
-    def __init__(self, nom, pins):
-        super().__init__(nom, pins)
+    def __init__(self, nom, pin_echo, pin_trig):
+        super().__init__(nom)
+        self._pin_echo = pin_echo
+        self._pin_trig = pin_trig
 
 
     def lire_valeur(self):
         pass
+
+
 
