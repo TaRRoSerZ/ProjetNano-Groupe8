@@ -26,7 +26,7 @@ class Test_Servo_Moteur(unittest.TestCase):
         self.assertEqual(result, exptected)
 
     @patch('classes.Servo_Moteur.AngularServo')
-    def test_angle_hors_valeur_acceptable(self, AngularServo):
+    def test_angle_trop_haut(self, AngularServo):
         """
         Teste si la méthode regler_angle lève une exception ValueError
         lorsqu'un angle hors des limites (-90 à 90) est fourni.
@@ -35,6 +35,17 @@ class Test_Servo_Moteur(unittest.TestCase):
 
         with self.assertRaises(ValueError):
             servo.regler_angle(100)
+
+    @patch('classes.Servo_Moteur.AngularServo')
+    def test_angle_trop_bas(self, AngularServo):
+        """
+        Teste si la méthode regler_angle lève une exception ValueError
+        lorsqu'un angle hors des limites (-90 à 90) est fourni.
+        """
+        servo = Servo_Moteur("capteur", 4)
+
+        with self.assertRaises(ValueError):
+            servo.regler_angle(-1)
 
 
 if __name__ == '__main__':
