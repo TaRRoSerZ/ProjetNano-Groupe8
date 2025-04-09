@@ -1,6 +1,6 @@
 
 
-class Voiture() :
+class Voiture :
     def __init__(self, nom:str) :
         self._nom = nom
         self._vitesse = 0
@@ -69,4 +69,6 @@ class Voiture() :
     def verifier_batterie(self):
         pass
 
+    def affichage_vitesse(self):
+        return print(f"Vitesse : {self._vitesse}")
 
