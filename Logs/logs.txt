@@ -1,0 +1,52 @@
+2025-04-08 16:15:37,091 - ERROR - Erreur de valeur lors de la lecture du capteur Capteur 1: Distance invalide reçue: ddezdzedze.
+2025-04-08 16:15:37,092 - INFO - Distance mesurée pour le capteur Capteur 1: 0.47 m.
+2025-04-08 16:15:37,093 - WARNING - Distance trop petite pour le capteur Capteur 1: 0.01 m.
+2025-04-08 16:38:22,672 - ERROR - Erreur de valeur lors de la lecture du capteur Capteur 1: Distance invalide reçue: ddezdzedze.
+2025-04-08 16:38:22,673 - INFO - Distance mesurée pour le capteur Capteur 1: 0.47 m.
+2025-04-08 16:38:22,675 - WARNING - Distance trop petite pour le capteur Capteur 1: 0.01 m.
+2025-04-08 16:42:43,171 - ERROR - Erreur de valeur lors de la lecture du capteur Capteur 1: Distance invalide reçue: ddezdzedze.
+2025-04-08 16:42:43,176 - INFO - Distance mesurée pour le capteur Capteur 1: 0.47 m.
+2025-04-08 16:42:43,177 - WARNING - Distance trop petite pour le capteur Capteur 1: 0.01 m.
+2025-04-08 16:42:44,406 - ERROR - Erreur de valeur lors de la lecture du capteur Capteur 1: Distance invalide reçue: ddezdzedze.
+2025-04-08 16:42:44,407 - INFO - Distance mesurée pour le capteur Capteur 1: 0.47 m.
+2025-04-08 16:42:44,407 - WARNING - Distance trop petite pour le capteur Capteur 1: 0.01 m.
+2025-04-08 16:42:45,453 - ERROR - Erreur de valeur lors de la lecture du capteur Capteur 1: Distance invalide reçue: ddezdzedze.
+2025-04-08 16:42:45,453 - INFO - Distance mesurée pour le capteur Capteur 1: 0.47 m.
+2025-04-08 16:42:45,454 - WARNING - Distance trop petite pour le capteur Capteur 1: 0.01 m.
+2025-04-08 16:42:46,630 - ERROR - Erreur de valeur lors de la lecture du capteur Capteur 1: Distance invalide reçue: ddezdzedze.
+2025-04-08 16:42:46,631 - INFO - Distance mesurée pour le capteur Capteur 1: 0.47 m.
+2025-04-08 16:42:46,632 - WARNING - Distance trop petite pour le capteur Capteur 1: 0.01 m.
+2025-04-08 16:42:47,751 - ERROR - Erreur de valeur lors de la lecture du capteur Capteur 1: Distance invalide reçue: ddezdzedze.
+2025-04-08 16:42:47,752 - INFO - Distance mesurée pour le capteur Capteur 1: 0.47 m.
+2025-04-08 16:42:47,753 - WARNING - Distance trop petite pour le capteur Capteur 1: 0.01 m.
+2025-04-08 16:42:48,860 - ERROR - Erreur de valeur lors de la lecture du capteur Capteur 1: Distance invalide reçue: ddezdzedze.
+2025-04-08 16:42:48,861 - INFO - Distance mesurée pour le capteur Capteur 1: 0.47 m.
+2025-04-08 16:42:48,862 - WARNING - Distance trop petite pour le capteur Capteur 1: 0.01 m.
+2025-04-08 16:42:49,829 - ERROR - Erreur de valeur lors de la lecture du capteur Capteur 1: Distance invalide reçue: ddezdzedze.
+2025-04-08 16:42:49,829 - INFO - Distance mesurée pour le capteur Capteur 1: 0.47 m.
+2025-04-08 16:42:49,830 - WARNING - Distance trop petite pour le capteur Capteur 1: 0.01 m.
+2025-04-08 16:42:51,063 - ERROR - Erreur de valeur lors de la lecture du capteur Capteur 1: Distance invalide reçue: ddezdzedze.
+2025-04-08 16:42:51,063 - INFO - Distance mesurée pour le capteur Capteur 1: 0.47 m.
+2025-04-08 16:42:51,064 - WARNING - Distance trop petite pour le capteur Capteur 1: 0.01 m.
+2025-04-08 16:47:38,881 - ERROR - Erreur de valeur lors de la lecture du capteur Capteur 1: Distance invalide reçue: ddezdzedze.
+2025-04-08 16:47:38,883 - INFO - Distance mesurée pour le capteur Capteur 1: 0.47 m.
+2025-04-08 16:47:38,883 - WARNING - Distance trop petite pour le capteur Capteur 1: 0.01 m.
+2025-04-08 16:47:39,920 - ERROR - Erreur de valeur lors de la lecture du capteur Capteur 1: Distance invalide reçue: ddezdzedze.
+2025-04-08 16:47:39,922 - INFO - Distance mesurée pour le capteur Capteur 1: 0.47 m.
+2025-04-08 16:47:39,923 - WARNING - Distance trop petite pour le capteur Capteur 1: 0.01 m.
+2025-04-08 16:47:40,918 - ERROR - Erreur de valeur lors de la lecture du capteur Capteur 1: Distance invalide reçue: ddezdzedze.
+2025-04-08 16:47:40,922 - INFO - Distance mesurée pour le capteur Capteur 1: 0.47 m.
+2025-04-08 16:47:40,923 - WARNING - Distance trop petite pour le capteur Capteur 1: 0.01 m.
+2025-04-08 16:47:41,902 - ERROR - Erreur de valeur lors de la lecture du capteur Capteur 1: Distance invalide reçue: ddezdzedze.
+2025-04-08 16:47:41,902 - INFO - Distance mesurée pour le capteur Capteur 1: 0.47 m.
+2025-04-08 16:47:41,903 - WARNING - Distance trop petite pour le capteur Capteur 1: 0.01 m.
+2025-04-08 16:47:43,021 - ERROR - Erreur de valeur lors de la lecture du capteur Capteur 1: Distance invalide reçue: ddezdzedze.
+2025-04-08 16:47:43,022 - INFO - Distance mesurée pour le capteur Capteur 1: 0.47 m.
+2025-04-08 16:47:43,027 - WARNING - Distance trop petite pour le capteur Capteur 1: 0.01 m.
+2025-04-08 16:47:43,945 - ERROR - Erreur de valeur lors de la lecture du capteur Capteur 1: Distance invalide reçue: ddezdzedze.
+2025-04-08 16:47:43,946 - INFO - Distance mesurée pour le capteur Capteur 1: 0.47 m.
+2025-04-08 16:47:43,946 - WARNING - Distance trop petite pour le capteur Capteur 1: 0.01 m.
+2025-04-08 16:47:45,085 - ERROR - Erreur de valeur lors de la lecture du capteur Capteur 1: Distance invalide reçue: ddezdzedze.
+2025-04-08 16:47:45,086 - INFO - Distance mesurée pour le capteur Capteur 1: 0.47 m.
+2025-04-08 16:47:45,087 - WARNING - Distance trop petite pour le capteur Capteur 1: 0.01 m.
+2025-04-09 07:17:47,693 - INFO - Distance mesurée pour le capteur Capteur 1: 0.47 m.
