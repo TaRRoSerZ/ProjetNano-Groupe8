@@ -50,4 +50,4 @@ class Capteur_Ultrasons(Capteur):
             logging.error(f"Erreur lors de la lecture du capteur {self.nom}: {str(e)}.")
             raise
 
-lireLogs()
+lireLogs(5)

@@ -8,7 +8,7 @@ from unittest.mock import patch, Mock
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'classes')))
 
 from classes.Capteur_Ultrasons import Capteur_Ultrasons
-from classes.Loggeur import setupLoggeur  # L'import de Loggeur fonctionne maintenant
+from classes.Loggeur import setupLoggeur
 
 class Test_CapteurUltrasons(unittest.TestCase):
     """
@@ -42,11 +42,8 @@ class Test_CapteurUltrasons(unittest.TestCase):
 
     @patch('classes.Capteur_Ultrasons.DistanceSensor')
     def test_si_distance_absurde(self, MockDistanceSensor):
-        # Simuler une valeur non valide pour la distance
         mock_sensor = MockDistanceSensor.return_value
-        mock_sensor.distance = "ddezdzedze"  # Chaîne de caractères invalide
-
-        # Vérifier que la ValueError est bien levée et capturée
+        mock_sensor.distance = "ddezdzedze"
         with self.assertRaises(ValueError):
             capteur = Capteur_Ultrasons("Capteur 1", 4, 2)
             capteur.lire_donnee()
