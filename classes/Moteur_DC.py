@@ -1,3 +1,6 @@
+import RPi.GPIO as GPIO
+import time
+import PCA9685 as PCA
 
 
 class Moteur_DC():
@@ -13,44 +16,64 @@ class Moteur_DC():
 
         Méthodes:
 
-        - regler_vitesse :Actionne le moteur DC avec les données fournies.
-        :param vitesse:
-
-        -changer_direction :Change la direction du moteur DC.
-        :param direction:
         """
 
-    def __init__(self,nom,pins,vitesse,direction):
+    def __init__(self,nom):
         self._noms = nom
-        self._pins = pins
-        self._vitesse = vitesse
-        self._direction = direction
+        self.__moteur0_enable_pin = 4
+        self.__moteur1_enable_pin = 5
+        self.__moteur0_pin_a = 17
+        self.__moteur1_pin_a = 27
+        self.__moteur0_pin_b = 18
+        self.__moteur1_pin_b = 22
+
+        self.__gpio_pins = [
+            self.__moteur0_pin_a,
+            self.__moteur0_pin_b,
+            self.__moteur1_pin_a,
+            self.__moteur1_pin_b
+        ]
+
+        self.__pwm_controller = PCA.PWM()
+        self.__pwm_controller.frequency = 60
+
+        GPIO.setwarnings(False)
+        GPIO.setmode(GPIO.BCM)
+        for pin in self.__gpio_pins:
+            GPIO.setup(pin, GPIO.OUT)
+
+    def __appliquer_etat_moteur(self, pin_a, pin_b, pwm_value):
+        GPIO.output(pin_a, GPIO.HIGH if pwm_value > 0 else GPIO.LOW)
+        GPIO.output(pin_b, GPIO.LOW if pwm_value > 0 else GPIO.HIGH)
+        channel = self.__moteur0_enable_pin if pin_a == self.__moteur0_pin_a else self.__moteur1_enable_pin
+        self.__pwm_controller.write(channel, 0, int(abs(pwm_value)))
+
+    def __convertir_vitesse(self, speed):
+        """
+        Convertit une vitesse de -100 à 100 en une valeur PWM comprise entre 0 et 4095.
+
+        vitesse (positive pour avancer, négative pour reculer).
+        retourne la valeur PWM correspondante.
+        """
+        return speed * 4095 / 100
+
+    def avancer(self, speed=100):
+        pwm_val = self.__convertir_vitesse(speed)
+        self.__appliquer_etat_moteur(self.__moteur0_pin_a, self.__moteur0_pin_b, pwm_val)
+        self.__appliquer_etat_moteur(self.__moteur1_pin_a, self.__moteur1_pin_b, pwm_val)
+
+    def reculer(self, speed=100):
+        speed = - speed
+        pwm_val = self.__convertir_vitesse(speed)
+        self.__appliquer_etat_moteur(self.__moteur0_pin_a, self.__moteur0_pin_b, pwm_val)
+        self.__appliquer_etat_moteur(self.__moteur1_pin_a, self.__moteur1_pin_b, pwm_val)
+
+    def stop(self):
+        self.__appliquer_etat_moteur(self.__moteur0_pin_a, self.__moteur0_pin_b, 0)
+        self.__appliquer_etat_moteur(self.__moteur1_pin_a, self.__moteur1_pin_b, 0)
+
+    def nettoyage_gpio(self):
+        GPIO.cleanup()
 
 
-    def regler_vitesse(self, vitesse):
-        """Règle la vitesse (0-100%)"""
-        if 0 <= vitesse <= 100:
-            self._vitesse = vitesse
-            self._en.value = vitesse / 100
-        else:
-            raise ValueError("Vitesse doit être entre 0 et 100")
 
-
-    def changer_direction(self, direction):
-        """Change la direction"""
-        if direction in ['avant', 'arrière']:
-            self._direction = direction
-            if direction == 'avant':
-                self._in1.on()
-                self._in2.off()
-            else:
-                self._in1.off()
-                self._in2.on()
-        else:
-            raise ValueError("Direction doit être 'avant' ou 'arrière'")
-
-    def arreter(self):
-        """Arrête le moteur"""
-        self._in1.off()
-        self._in2.off()
-        self._en.value = 0
