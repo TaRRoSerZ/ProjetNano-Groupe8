@@ -8,7 +8,8 @@ from unittest.mock import patch, Mock
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'classes')))
 
 from classes.Capteur_Ultrasons import Capteur_Ultrasons
-from classes.Loggeur import setupLoggeur
+from classes.Loggeur import setupLoggeur, lireLogs
+
 
 class Test_CapteurUltrasons(unittest.TestCase):
     """
@@ -47,6 +48,8 @@ class Test_CapteurUltrasons(unittest.TestCase):
         with self.assertRaises(ValueError):
             capteur = Capteur_Ultrasons("Capteur 1", 4, 2)
             capteur.lire_donnee()
+
+lireLogs(3)
 
 if __name__ == '__main__':
     unittest.main()
