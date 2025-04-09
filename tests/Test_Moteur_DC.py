@@ -2,7 +2,6 @@ import unittest
 from unittest.mock import patch
 from classes.Moteur_DC import Moteur_DC
 
-
 class Test_Moteur_DC(unittest.TestCase):
     """
     Classe de tests unitaires pour la classe Moteur_DC.py.
