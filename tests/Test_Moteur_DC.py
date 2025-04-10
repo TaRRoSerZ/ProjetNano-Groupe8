@@ -35,8 +35,8 @@ class TestMoteurDC(unittest.TestCase):
             """
 
     def test_avancer_si_speed_moins_1(self):
-        result = self.moteur.avancer(1)
-        self.assertEqual(result, 'La voiture avance')
+        with self.assertRaises(ValueError):
+            self.moteur.avancer(0)
         """
                 Teste si la méthode avancer n'est pas inférieur à 1 sinon elle se bloque à minimum 1
                 pour qu'elle ne s'arrête pas.
@@ -58,8 +58,8 @@ class TestMoteurDC(unittest.TestCase):
             """
 
     def test_reculer_si_plus_1(self):
-        result = self.moteur.reculer(-1)
-        self.assertEqual(result, 'La voiture recule')
+        with self.assertRaises(ValueError):
+            self.moteur.reculer(1)
         """
                Teste si la méthode reculer() bloque la vitesse si elle est au dessus de -1
         """
