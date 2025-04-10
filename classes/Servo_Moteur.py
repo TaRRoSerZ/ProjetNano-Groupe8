@@ -1,49 +1,51 @@
-from gpiozero import AngularServo
+import PCA9685 as PCA
+
 
 
 class Servo_Moteur:
     """
-    Classe pour contrôler un servo-moteur avec GPIOzero (sans pigpio).
+    Classe pour contrôler un servo-moteur avec le PCA9685.
 
     Attributs:
         nom (str): Nom du servo
-        pin (int): Broche GPIO de contrôle
-        angle (float): Angle courant (-90 à 90°)
+        channel (int): Canal PWM du PCA9685
+        angle (float): Angle courant (0 à 90°)
         min_pulse (float): Largeur impulsion min (ms, défaut 0.5)
         max_pulse (float): Largeur impulsion max (ms, défaut 2.5)
-
-    Méthodes:
-
-        regler_angle(angle):
-            Règle l'angle du servo (-90 à 90°)
-
+        pca (PCA9685): Contrôleur PWM
     """
 
-    def __init__(self, nom, pin, angle=0, min_pulse=0.5, max_pulse=2.5):
+    def __init__(self, nom):
         self._nom = nom
-        self._pin = pin
-        self._angle = angle
+        self._channel = 0
+        self._pulse = 320
+        self._min_pulse = 200
+        self._max_pulse = 500
+        self._pca = PCA.PWM()
+        self._pca.frequency = 60
 
-        # Initialisation avec PWM natif
-        self._servo = AngularServo(
-            pin,
-            min_angle=-90,
-            max_angle=90,
-            min_pulse_width=min_pulse / 1000,
-            max_pulse_width=max_pulse / 1000,
-            pin_factory=None  # Utilise le PWM par défaut
-        )
-
-        self.regler_angle(angle)
 
     def regler_angle(self, angle):
-        """Règle l'angle (-90° à 90°)"""
-        if -90 <= angle <= 90:
-            self._angle = angle
-            self._servo.angle = angle
-            return angle
-        raise ValueError("Angle doit être entre -90 et 90 degrés")
+        """Règle l'angle (0° à 90°)"""
+        angle = max(0, min(180, angle)) + 20
+        pulse = self._pulse + ((angle / 180.0) * (self._max_pulse - self._min_pulse))
+        self._pca.write(0, 0, int(pulse))
+        self.desactiver_pwm()
 
+    def tourner_gauche(self):
+        """Tourne à gauche (angle 0°)"""
+        self.regler_angle(0)
 
+    def tourner_droite(self):
+        """Tourne à droite (angle 90°)"""
+        self.regler_angle(90)
 
+    def centrer(self):
+        """Centre le servo (angle 45°)"""
+        self.regler_angle(45)
 
+    def desactiver_pwm(self):
+        """
+        Désactive la sortie PWM pour libérer le servo
+        """
+        self._pca.write(0, 0, 4096)

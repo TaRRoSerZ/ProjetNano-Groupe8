@@ -4,17 +4,23 @@ import PCA9685 as PCA
 
 class Moteur_DC():
     """
-        Classe représentant un moteur servo.
+        Classe représentant un moteur DC.
 
         Attributs:
 
         - nom (str): Le nom du moteur.
-        - pins (dict): Dictionnaire des numéros de pins associés au moteur.
-        - vitesse (int): La vitesse du moteur.
-        - direction (str): La direction du moteur.
 
-        Méthodes:
 
+
+        Méthodes :
+
+        avancer : permet au moteur d'avancer
+
+        reculer : permet au mmoteur de reculer
+
+        stop : permet d'arreter le moteur
+
+        nettoyage_gpio : permet de nettoyer les pins gpio
         """
 
     def __init__(self,nom):
