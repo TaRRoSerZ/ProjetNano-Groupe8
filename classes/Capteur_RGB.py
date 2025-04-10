@@ -1,67 +1,53 @@
-import board
-import busio
-import adafruit_tcs34725
+import smbus2
 from Capteur import Capteur
 
 
 class Capteur_RGB(Capteur):
     """
-    Classe représentant un capteur RGB basé sur le modèle TCS34725.
-
-    Cette classe permet de lire les valeurs RGB et de détecter la couleur dominante en fonction des seuils définis.
-
-    Attributs :
-    ----------
-    - capteur : adafruit_tcs34725.TCS34725
-        Instance du capteur RGB TCS34725.
-    - nom : str
-        Nom du capteur.
-
-    Methodes :
-
-    Lire_donnee():
-        Lit les valeurs RGB du capteur.
-
-        Retourne :
-        ---------
-        dict
-            Un dictionnaire contenant les valeurs des composantes rouge, vert et bleu.
-
-    Detecter_couleur():
-        Détecte la couleur dominante en fonction des seuils prédéfinis.
-
-        Retourne :
-        ---------
-        str
-            La couleur dominante détectée : "Rouge", "Vert", "Orange" ou "Inconnu".
-
-
+    Classe pour le capteur TCS34725 utilisant smbus2 (sans dépendance Adafruit).
     """
-
-    def __init__(self, nom):
+    def __init__(self, nom, bus_num=1, address=0x29):
         super().__init__(nom)
-        i2c = busio.I2C(board.SCL, board.SDA)
+        self._bus = smbus2.SMBus(bus_num)  # Bus I2C (1 pour Raspberry Pi)
+        self._address = address  # Adresse I2C par défaut du TCS34725
+        self._init_capteur()
+
+    def _init_capteur(self):
         try:
-            self._capteur = adafruit_tcs34725.TCS34725(i2c)
-            self._capteur.integration_time = 50  # Ajuste le temps d'intégration (ms)
-        except (ValueError, RuntimeError) as e:
-            print(f"Erreur d'initialisation du capteur : {e}")
-            self._capteur = None
+            # Configuration du capteur (registres du TCS34725)
+            self._bus.write_byte_data(self._address, 0x80 | 0x00, 0x03)  # Power ON
+            self._bus.write_byte_data(self._address, 0x80 | 0x01, 0x2C)   # Temps d'intégration = 50 ms
+            self._bus.write_byte_data(self._address, 0x80 | 0x0F, 0x00)   # Pas de gain
+        except Exception as e:
+            print(f"Erreur d'initialisation : {e}")
+            self._bus = None
+
+    def _lire_raw(self):
+        """Lit les valeurs brutes R, G, B depuis le capteur."""
+        if not self._bus:
+            return (0, 0, 0)
+        data = self._bus.read_i2c_block_data(self._address, 0x80 | 0x14, 6)
+        r = data[1] << 8 | data[0]
+        g = data[3] << 8 | data[2]
+        b = data[5] << 8 | data[4]
+        return (r, g, b)
 
     def lire_donnee(self):
-        if not self._capteur:
-            return {"rouge": 0, "vert": 0, "bleu": 0}
-        r, g, b = self._capteur.color_rgb_bytes
-        return {"rouge": r, "vert": g, "bleu": b}
+        """Retourne les valeurs RGB normalisées (0-255)."""
+        r, g, b = self._lire_raw()
+        # Normalisation (ajustez selon vos besoins)
+        max_val = max(r, g, b, 1)  # Évite la division par zéro
+        return {
+            "rouge": int((r / max_val) * 255),
+            "vert": int((g / max_val) * 255),
+            "bleu": int((b / max_val) * 255)
+        }
 
     def detecter_couleur(self):
-        if not self._capteur:
-            return "Capteur non initialisé"
-
+        """Détecte la couleur dominante (identique à votre version originale)."""
         couleur = self.lire_donnee()
         r, g, b = couleur["rouge"], couleur["vert"], couleur["bleu"]
 
-        # Seuils de détection des couleurs
         if r > 150 and g < 50 and b < 50:
             return "Rouge"
         elif g > 150 and r < 50 and b < 50:
@@ -70,3 +56,4 @@ class Capteur_RGB(Capteur):
             return "Orange"
         else:
             return "Inconnu"
+

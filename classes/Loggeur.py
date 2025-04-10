@@ -9,13 +9,13 @@ def setupLoggeur():
         ]
     )
 
-def lireLogs(limite=20):
+def lireLogs(limite):
     if type(limite) != int:
         limite = 20
 
     with open('../Logs/logs.txt', 'r') as f:
         lines = f.readlines()[-limite:]
         for line in lines:
-            print(line, end="")
+            print(line, end=" ")
 
         f.close()
