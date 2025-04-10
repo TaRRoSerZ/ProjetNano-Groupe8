@@ -20,3 +20,4 @@ class Capteur(ABC):
     def nom(self):
         """getter de nom"""
         return self._nom
+
