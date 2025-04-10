@@ -71,9 +71,7 @@ class Moteur_DC():
         return 'La voiture avance'
 
     def reculer(self, speed=-100):
-        pwm_val = self.__convertir_vitesse(speed)
-        self.__appliquer_etat_moteur(self.__moteur0_pin_a, self.__moteur0_pin_b, pwm_val)
-        self.__appliquer_etat_moteur(self.__moteur1_pin_a, self.__moteur1_pin_b, pwm_val)
+        self.avancer(speed)
         return 'La voiture recule'
 
     def stop(self):
