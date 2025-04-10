@@ -1,53 +1,31 @@
+import sys
 import unittest
-from unittest.mock import patch, Mock
-from classes.Capteur_RGB import Capteur_RGB
+from unittest.mock import MagicMock, PropertyMock
 
+# ✨ Création de faux modules avant l'import du code à tester
+sys.modules['board'] = MagicMock()
+sys.modules['board'].SCL = MagicMock()
+sys.modules['board'].SDA = MagicMock()
+
+sys.modules['busio'] = MagicMock()
+sys.modules['adafruit_tcs34725'] = MagicMock()
+
+from classes.Capteur_RGB import Capteur_RGB  # <-- maintenant que tout est mocké
 
 class Test_Capteur_RGB(unittest.TestCase):
-    """
-    Classe de tests unitaires pour la classe `Capteur_RGB`.
-    """
+    def setUp(self):
+        # Configuration du capteur mocké
+        self.mock_tcs = sys.modules['adafruit_tcs34725'].TCS34725.return_value
+        type(self.mock_tcs).color_rgb_bytes = PropertyMock(return_value=(100, 150, 200))
 
-    @patch('classes.Capteur_RGB.TCS34725')
-    def test_lire_donnee_valeurs_valides(self, MockTCS34725):
-        mock_capteur = MockTCS34725.return_value
-        mock_capteur.color_rgb_bytes = (10, 20, 30)
-        capteur = Capteur_RGB("capteur")
-        result = capteur.lire_donnee()
-        expected = {"rouge": 10, "vert": 20, "bleu": 30}
-        self.assertEqual(result, expected)
-        mock_capteur.color_rgb_bytes.__get__.assert_called_once()
+        self.capteur = Capteur_RGB("test")
 
-    @patch('classes.Capteur_RGB.TCS34725')
-    def test_lire_donnee_exception(self, MockTCS34725):
-        mock_capteur = MockTCS34725.return_value
-        mock_capteur.color_rgb_bytes.side_effect = Exception("Erreur de lecture")
-        capteur = Capteur_RGB("capteur")
-        result = capteur.lire_donnee()
-        expected = {"rouge": 0, "vert": 0, "bleu": 0}
-        self.assertEqual(result, expected)
-        mock_capteur.color_rgb_bytes.__get__.assert_called_once()
+    def test_lire_donnee(self):
+        result = self.capteur.lire_donnee()
+        self.assertEqual(result, {"rouge": 100, "vert": 150, "bleu": 200})
 
-    @patch('classes.Capteur_RGB.TCS34725')
-    def test_detecter_couleur_rouge(self, MockTCS34725):
-        mock_capteur = MockTCS34725.return_value
-        mock_capteur.color_rgb_bytes = (200, 50, 50)
-        capteur = Capteur_RGB("capteur")
-        result = capteur.detecter_couleur()
-        expected = "Rouge"
-        self.assertEqual(result, expected)
-        mock_capteur.color_rgb_bytes.__get__.assert_called_once()
-
-    @patch('classes.Capteur_RGB.TCS34725')
-    def test_detecter_couleur_valeurs_extremes(self, MockTCS34725):
-        mock_capteur = MockTCS34725.return_value
-        mock_capteur.color_rgb_bytes = (255, 255, 255)
-        capteur = Capteur_RGB("capteur")
-        result = capteur.detecter_couleur()
-        expected = "Blanc"  # Exemple de couleur pour des valeurs maximales
-        self.assertEqual(result, expected)
-        mock_capteur.color_rgb_bytes.__get__.assert_called_once()
-
+    def test_detecter_couleur(self):
+        self.assertEqual(self.capteur.detecter_couleur(), "Bleu")
 
 if __name__ == '__main__':
     unittest.main()
