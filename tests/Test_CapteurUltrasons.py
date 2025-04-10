@@ -1,6 +1,14 @@
+import sys
+import os
 import unittest
+import logging
 from unittest.mock import patch, Mock
+
+# Ajouter le répertoire 'classes' au chemin d'importation
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'classes')))
+
 from classes.Capteur_Ultrasons import Capteur_Ultrasons
+from classes.Loggeur import setupLoggeur, lireLogs
 
 
 class Test_CapteurUltrasons(unittest.TestCase):
@@ -12,10 +20,7 @@ class Test_CapteurUltrasons(unittest.TestCase):
        cas suivants :
        - Lorsque la distance mesurée est trop petite.
        - Lorsque la distance mesurée est normale.
-
-       Méthodes de test :
-           test_si_distance_trop_petite() : Teste si `lire_donnee()` retourne `None` pour une distance trop petite.
-           test_si_distance_normale() : Teste si `lire_donnee()` retourne la distance correcte pour une mesure normale.
+       - Quand une valeur absurde est donnée.
        """
 
     @patch('classes.Capteur_Ultrasons.DistanceSensor')
@@ -36,6 +41,15 @@ class Test_CapteurUltrasons(unittest.TestCase):
         expected = 0.47
         self.assertEqual(result, expected)
 
+    @patch('classes.Capteur_Ultrasons.DistanceSensor')
+    def test_si_distance_absurde(self, MockDistanceSensor):
+        mock_sensor = MockDistanceSensor.return_value
+        mock_sensor.distance = "ddezdzedze"
+        with self.assertRaises(ValueError):
+            capteur = Capteur_Ultrasons("Capteur 1", 4, 2)
+            capteur.lire_donnee()
+
+lireLogs(3)
 
 if __name__ == '__main__':
     unittest.main()

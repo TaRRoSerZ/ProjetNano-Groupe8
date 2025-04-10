@@ -1,6 +1,6 @@
 from Capteur import Capteur
 from gpiozero import DigitalInputDevice
-from time import sleep
+
 
 class Capteur_IR(Capteur):
     """
@@ -11,6 +11,11 @@ class Capteur_IR(Capteur):
     nom : Nom du capteur
 
     pin_signal : pin servant à se connecter au Raspberry
+
+    Methodes :
+
+    lire_donnee() :
+        Renvoie la veleur de detection du capteur.
     """
     def __init__(self, nom, pin_signal: int):
         super().__init__(nom)
@@ -19,7 +24,7 @@ class Capteur_IR(Capteur):
 
 
     def lire_donnee(self):
-        return not self._capteur.is_active  # True si obstacle (LOW)
+        return not self._capteur.value
 
 
 
