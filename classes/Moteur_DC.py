@@ -1,4 +1,5 @@
-
+import PCA9685 as PCA
+import RPi.GPIO as GPIO
 
 class Moteur_DC():
     """
