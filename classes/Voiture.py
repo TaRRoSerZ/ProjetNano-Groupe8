@@ -1,4 +1,4 @@
-from servo import Servo_Moteur
+from Servo_Moteur import Servo_Moteur
 from Moteur_DC import Moteur_DC
 from Capteur_Ultrasons import Capteur_Ultrasons
 from Capteur_IR import Capteur_IR
