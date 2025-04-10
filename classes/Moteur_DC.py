@@ -1,20 +1,25 @@
-import RPi.GPIO as GPIO
 import PCA9685 as PCA
-
+import RPi.GPIO as GPIO
 
 class Moteur_DC():
     """
-        Classe représentant un moteur servo.
+        Classe représentant un moteur DC.
 
         Attributs:
 
         - nom (str): Le nom du moteur.
-        - pins (dict): Dictionnaire des numéros de pins associés au moteur.
-        - vitesse (int): La vitesse du moteur.
-        - direction (str): La direction du moteur.
 
-        Méthodes:
 
+
+        Méthodes :
+
+        avancer : permet au moteur d'avancer
+
+        reculer : permet au mmoteur de reculer
+
+        stop : permet d'arreter le moteur
+
+        nettoyage_gpio : permet de nettoyer les pins gpio
         """
 
     def __init__(self,nom):
@@ -66,7 +71,6 @@ class Moteur_DC():
         return 'La voiture avance'
 
     def reculer(self, speed=-100):
-        speed = - speed
         pwm_val = self.__convertir_vitesse(speed)
         self.__appliquer_etat_moteur(self.__moteur0_pin_a, self.__moteur0_pin_b, pwm_val)
         self.__appliquer_etat_moteur(self.__moteur1_pin_a, self.__moteur1_pin_b, pwm_val)
