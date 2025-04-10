@@ -2,7 +2,7 @@ import sys
 import unittest
 from unittest.mock import MagicMock, PropertyMock
 
-# ✨ Création de faux modules avant l'import du code à tester
+# Création de faux modules avant l'import du code à tester
 sys.modules['board'] = MagicMock()
 sys.modules['board'].SCL = MagicMock()
 sys.modules['board'].SDA = MagicMock()
