@@ -53,7 +53,10 @@ class Moteur_DC():
 
         vitesse (positive pour avancer, négative pour reculer).
         retourne la valeur PWM correspondante.
+        Lève une exception si la vitesse dépasse les bornes autorisées.
         """
+        if speed > 100 or speed < -100:
+            raise ValueError("La vitesse doit être comprise entre -100 et 100.")
         return speed * 4095 / 100
 
     def avancer(self, speed=100):
