@@ -8,44 +8,61 @@ class Test_Servo_Moteur(unittest.TestCase):
     Classe de tests unitaires pour la classe Servo_Moteur.
 
     Méthodes:
-        - test_angle_bon: Vérifie que la méthode regler_angle fonctionne correctement avec un angle valide.
-        - test_angle_hors_valeur_acceptable: Vérifie que la méthode regler_angle lève une exception pour un angle invalide.
+        - test_regler_angle: Teste la méthode regler_angle pour un angle valide.
+        -tourner_gauche: Teste la méthode tourner_gauche.
+        - tourner_droite: Teste la méthode tourner_droite.
+        - centrer: Teste la méthode centrer.
+        - desactiver_pwm: Teste la méthode desactiver_pwm.
     """
 
-    @patch('classes.Servo_Moteur.AngularServo')
-    def test_angle_bon(self, AngularServo):
-        """
-        Teste si la méthode regler_angle retourne correctement l'angle réglé
-        lorsqu'un angle valide est fourni.
-        """
-        mock_servo = AngularServo.return_value
-        mock_servo.angle = 0
-        servo = Servo_Moteur("servo", 4)
-        result = servo.regler_angle(0)
-        exptected = 0
-        self.assertEqual(result, exptected)
+    def setUp(self, mock_pwm):
+        """ Initialise un objet Servo_Moteur pour les tests."""
+        patcher = patch('classes.PCA9685.PWM')
+        self.mock_pwm_class = patcher.start()
+        self.addCleanup(patcher.stop)
+        self.servo = Servo_Moteur("servo_test")
 
-    @patch('classes.Servo_Moteur.AngularServo')
-    def test_angle_trop_haut(self, AngularServo):
-        """
-        Teste si la méthode regler_angle lève une exception ValueError
-        lorsqu'un angle hors des limites (-90 à 90) est fourni.
-        """
-        servo = Servo_Moteur("capteur", 4)
+    def test_regler_angle(self, mock_pwm):
+        """Test la méthode regler_angle pour un angle valide."""
 
-        with self.assertRaises(ValueError):
-            servo.regler_angle(100)
+        angle = 90
+        self.servo.regler_angle(angle)
 
-    @patch('classes.Servo_Moteur.AngularServo')
-    def test_angle_trop_bas(self, AngularServo):
-        """
-        Teste si la méthode regler_angle lève une exception ValueError
-        lorsqu'un angle hors des limites (-90 à 90) est fourni.
-        """
-        servo = Servo_Moteur("capteur", 4)
+        expected_value = int(self.servo._pulse + ((angle / 180.0) * (self.servo._max_pulse - self.servo._min_pulse)))
+        self.mock_pwm_class.return_value.write.assert_called_once_with(0, 0, expected_value)
 
-        with self.assertRaises(ValueError):
-            servo.regler_angle(-1)
+    def test_tourner_gauche(self, mock_pwm):
+        """Teste la méthode tourner_gauche."""
+
+        angle = 0
+        self.servo.tourner_gauche()
+
+        expected_value = int(self.servo._pulse + ((angle / 180.0) * (self.servo._max_pulse - self.servo._min_pulse)))
+        self.mock_pwm_class.return_value.write.assert_called_once_with(0, 0, expected_value)
+
+    def test_tourner_droite(self, mock_pwm):
+        """Teste la méthode tourner_droite."""
+
+        angle = 90
+        self.servo.tourner_droite()
+
+        expected_value = int(self.servo._pulse + ((angle / 180.0) * (self.servo._max_pulse - self.servo._min_pulse)))
+        self.mock_pwm_class.return_value.write.assert_called_once_with(0, 0, expected_value)
+
+    def test_centrer(self, mock_pwm):
+        """Teste la méthode centrer."""
+
+        angle = 45
+        self.servo.centrer()
+
+        expected_value = int(self.servo._pulse + ((angle / 180.0) * (self.servo._max_pulse - self.servo._min_pulse)))
+        self.mock_pwm_class.return_value.write.assert_called_once_with(0, 0, expected_value)
+
+    def test_desactiver_pwm(self, mock_pwm):
+        """Teste la méthode desactiver_pwm."""
+
+        self.servo.desactiver_pwm()
+        self.mock_pwm_class.return_value.write.assert_called_once_with(0, 0, 4096)
 
 
 if __name__ == '__main__':
