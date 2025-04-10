@@ -30,7 +30,6 @@ class Servo_Moteur:
         angle = max(0, min(180, angle)) + 20
         pulse = self._pulse + ((angle / 180.0) * (self._max_pulse - self._min_pulse))
         self._pca.write(0, 0, int(pulse))
-        self.desactiver_pwm()
 
     def tourner_gauche(self):
         """Tourne à gauche (angle 0°)"""
