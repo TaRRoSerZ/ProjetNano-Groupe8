@@ -1,28 +1,35 @@
-import PCA9685 as PCA
-import RPi.GPIO as GPIO
+try:
+    import RPi.GPIO as real_gpio
+except ModuleNotFoundError:
+    from unittest.mock import MagicMock
+    real_gpio = MagicMock()
+
+try:
+    import PCA9685 as PCA
+except ModuleNotFoundError:
+    PCA = MagicMock()
+    PCA.PWM = MagicMock()
+
 
 class Moteur_DC():
+
+
     """
         Classe représentant un moteur DC.
 
         Attributs:
-
-        - nom (str): Le nom du moteur.
-
-
+            - nom (str): Le nom du moteur.
 
         Méthodes :
+            - avancer : permet au moteur d'avancer
+            - reculer : permet au mmoteur de reculer
+            - stop : permet d'arreter le moteur
+            - nettoyage_gpio : permet de nettoyer les pins gpio
+    """
 
-        avancer : permet au moteur d'avancer
+    def __init__(self, nom, gpio_module=None, pwm_controller=None):
 
-        reculer : permet au mmoteur de reculer
 
-        stop : permet d'arreter le moteur
-
-        nettoyage_gpio : permet de nettoyer les pins gpio
-        """
-
-    def __init__(self,nom):
         self._noms = nom
         self.__moteur0_enable_pin = 4
         self.__moteur1_enable_pin = 5
@@ -31,6 +38,13 @@ class Moteur_DC():
         self.__moteur0_pin_b = 18
         self.__moteur1_pin_b = 22
 
+        self.__gpio = gpio_module if gpio_module else real_gpio
+        self.__pwm_controller = pwm_controller if pwm_controller else PCA.PWM()
+        self.__pwm_controller.frequency = 60
+
+        self.__gpio.setwarnings(False)
+        self.__gpio.setmode(self.__gpio.BCM)
+
         self.__gpio_pins = [
             self.__moteur0_pin_a,
             self.__moteur0_pin_b,
@@ -38,28 +52,16 @@ class Moteur_DC():
             self.__moteur1_pin_b
         ]
 
-        self.__pwm_controller = PCA.PWM()
-        self.__pwm_controller.frequency = 60
-
-        GPIO.setwarnings(False)
-        GPIO.setmode(GPIO.BCM)
         for pin in self.__gpio_pins:
-            GPIO.setup(pin, GPIO.OUT)
+            self.__gpio.setup(pin, self.__gpio.OUT)
 
     def __appliquer_etat_moteur(self, pin_a, pin_b, pwm_value):
-        GPIO.output(pin_a, GPIO.HIGH if pwm_value > 0 else GPIO.LOW)
-        GPIO.output(pin_b, GPIO.LOW if pwm_value > 0 else GPIO.HIGH)
+        self.__gpio.output(pin_a, self.__gpio.HIGH if pwm_value > 0 else self.__gpio.LOW)
+        self.__gpio.output(pin_b, self.__gpio.LOW if pwm_value > 0 else self.__gpio.HIGH)
         channel = self.__moteur0_enable_pin if pin_a == self.__moteur0_pin_a else self.__moteur1_enable_pin
         self.__pwm_controller.write(channel, 0, int(abs(pwm_value)))
 
     def __convertir_vitesse(self, speed):
-        """
-        Convertit une vitesse de -100 à 100 en une valeur PWM comprise entre 0 et 4095.
-
-        vitesse (positive pour avancer, négative pour reculer).
-        retourne la valeur PWM correspondante.
-        Lève une exception si la vitesse dépasse les bornes autorisées.
-        """
         if speed > 100 or speed < -100:
             raise ValueError("La vitesse doit être comprise entre -100 et 100.")
         return speed * 4095 / 100
@@ -80,5 +82,4 @@ class Moteur_DC():
         return 'La voiture est arretee'
 
     def nettoyage_gpio(self):
-        GPIO.cleanup()
-
+        self.__gpio.cleanup()
