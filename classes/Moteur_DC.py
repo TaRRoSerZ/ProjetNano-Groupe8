@@ -1,5 +1,3 @@
-import RPi.GPIO as GPIO
-import PCA9685 as PCA
 
 
 class Moteur_DC():
@@ -69,7 +67,6 @@ class Moteur_DC():
         return 'La voiture avance'
 
     def reculer(self, speed=-100):
-        speed = - speed
         pwm_val = self.__convertir_vitesse(speed)
         self.__appliquer_etat_moteur(self.__moteur0_pin_a, self.__moteur0_pin_b, pwm_val)
         self.__appliquer_etat_moteur(self.__moteur1_pin_a, self.__moteur1_pin_b, pwm_val)
