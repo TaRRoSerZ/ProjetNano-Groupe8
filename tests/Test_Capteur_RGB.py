@@ -10,7 +10,7 @@ sys.modules['board'].SDA = MagicMock()
 sys.modules['busio'] = MagicMock()
 sys.modules['adafruit_tcs34725'] = MagicMock()
 
-from classes.Capteur_RGB import Capteur_RGB  # <-- maintenant que tout est mocké
+from classes.Capteur_RGB import Capteur_RGB  
 
 class Test_Capteur_RGB(unittest.TestCase):
     def setUp(self):
