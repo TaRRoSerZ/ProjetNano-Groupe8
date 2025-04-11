@@ -7,7 +7,17 @@ from threading import Thread, Lock
 
 
 class Voiture:
+    """
+    Classe représentant une voiture autonome équipée de capteurs et de moteurs.
+    Elle peut détecter des obstacles, suivre un mur, et effectuer une course avec plusieurs tours.
+    """
+
     def __init__(self, nom):
+        """
+        Initialise une instance de la voiture.
+
+        :param nom: Nom de la voiture.
+        """
         self._nom = nom
         self._moteur = Moteur_DC("Moteur DC")
         self._servo = Servo_Moteur()
@@ -15,8 +25,6 @@ class Voiture:
         self._capteur_gauche = Capteur_Ultrasons("Capteur gauche", 9, 11)
         self._capteur_droit = Capteur_Ultrasons("Capteur droit", 19, 26)
         self._capteur_ligne = Capteur_IR("Capteur IR", 20)
-
-        # État partagé pour contrôler la voiture
         self._etat_voiture = True
         self._lock = Lock()
 
@@ -69,11 +77,14 @@ class Voiture:
         self._etat_voiture = etat_voiture
 
     def suivre_mur(self, direction="droite"):
+        """
+        Fait suivre un mur à la voiture dans une direction donnée.
 
+        :param direction: Direction du mur à suivre ("droite" ou "gauche").
+        """
         if direction == "droite":
             capteur = self._capteur_droit
             while self._etat_voiture:
-                print("Suivre le mur...")
                 distance = capteur.lire_donnee() * 100
                 if distance <= 20 or distance >= 100:
                     self._servo.tourner_gauche()
@@ -84,20 +95,20 @@ class Voiture:
                 else:
                     self._servo.centrer()
                 time.sleep(0.2)
-        else:
-            pass
 
     def detecter_collision(self):
+        """
+        Détecte les obstacles et ajuste la trajectoire de la voiture pour les éviter.
+        """
         while self._etat_voiture:
-            self._moteur.avancer(30)  # Démarrer la voiture en ligne droite
-            self._servo.centrer()  # Centrer le servo
+            self._moteur.avancer(30)
+            self._servo.centrer()
             distance_avant = self._capteur_avant.lire_donnee() * 100
             distance_gauche = self._capteur_gauche.lire_donnee() * 100
             distance_droite = self._capteur_droit.lire_donnee() * 100
 
-            if distance_avant <= 20:  # Si un obstacle est détecté à l'avant
-                print("Obstacle détecté à l'avant, ralentissement...")
-                self._moteur.stop()  # stop
+            if distance_avant <= 20:
+                self._moteur.stop()
                 time.sleep(0.5)
                 self._servo.tourner_gauche()
                 self._moteur.reculer(-30)
@@ -105,72 +116,29 @@ class Voiture:
                 self._moteur.stop()
                 time.sleep(0.5)
                 self._servo.centrer()
-                self._moteur.avancer(30)  # Avancer après avoir évité l'obstacle
-                if distance_gauche > distance_droite:  # Plus d'espace à gauche
-                    print("Esquive vers la gauche...")
+                self._moteur.avancer(30)
+                if distance_gauche > distance_droite:
                     self._servo.tourner_gauche()
                     self._moteur.avancer(30)
                     time.sleep(0.15)
                     self._servo.centrer()
-                elif distance_droite > distance_gauche:  # Plus d'espace à droite
-                    print("Esquive vers la droite...")
+                elif distance_droite > distance_gauche:
                     self._servo.tourner_droite()
                     self._moteur.avancer(30)
                     time.sleep(0.15)
                     self._servo.centrer()
 
-
-            elif distance_gauche > distance_droite:  # Plus d'espace à gauche
-                print("Esquive vers la gauche...")
-                self._servo.tourner_gauche()
-                time.sleep(0.15)
-                self._servo.centrer()
-
-            elif distance_droite > distance_gauche:  # Plus d'espace à droite
-                print("Esquive vers la droite...")
-                self._servo.tourner_droite()
-                time.sleep(0.15)
-                self._servo.centrer()
-
-            elif distance_avant <= 20 and distance_gauche <= 11:
-                self._moteur.stop()
-                self._servo.centrer()
-                self._moteur.reculer(-30)  # Reculer de 20 cm
-                time.sleep(1)
-                self._moteur.stop()
-                time.sleep(1)
-                self._servo.tourner_droite()
-                self._moteur.avancer(30)
-                time.sleep(0.3)
-                self._moteur.stop()
-                self._servo.tourner_gauche()
-                time.sleep(0.1)
-                self._servo.centrer()
-                self._moteur.avancer(30)
-
-
-            elif distance_avant <= 20 and distance_droite <= 11:
-                self._moteur.stop()
-                self._servo.centrer()
-                self._moteur.reculer(-30)  # Reculer de 20 cm
-                time.sleep(1)
-                self._moteur.stop()
-                time.sleep(1)
-                self._servo.tourner_gauche()
-                self._moteur.avancer(30)
-                time.sleep(0.3)
-                self._moteur.stop()
-                self._servo.tourner_droite()
-                time.sleep(0.1)
-                self._servo.centrer()
-                self._moteur.avancer(30)
-        time.sleep(0.3)
-
     def aller_tout_droit(self):
+        """
+        Fait avancer la voiture en ligne droite.
+        """
         self._servo.centrer()
         self._moteur.avancer(20)
 
     def demi_tour_en_T(self):
+        """
+        Effectue un demi-tour en forme de T.
+        """
         self._servo.centrer()
         self._moteur.avancer(60)
         time.sleep(0.3)
@@ -191,6 +159,9 @@ class Voiture:
         self._servo.desactiver_pwm()
 
     def grand_8(self):
+        """
+        Fait effectuer un mouvement en forme de 8 à la voiture.
+        """
         self._servo.centrer()
         self._moteur.avancer(60)
         time.sleep(0.5)
@@ -204,43 +175,45 @@ class Voiture:
         self._servo.centrer()
         self._servo.desactiver_pwm()
 
-
     def arreter_voiture(self):
+        """
+        Arrête la voiture et désactive les moteurs.
+        """
         self._moteur.stop()
         self._servo.desactiver_pwm()
-        self._etat_voiture = False  # Mettre à jour l'état de la voiture
+        self._etat_voiture = False
 
     def compteur_tour(self, nb_tour):
+        """
+        Compte le nombre de tours effectués par la voiture.
+
+        :param nb_tour: Nombre de tours à effectuer.
+        """
         compte = nb_tour
-        print(f"Nombre de tours restants : {compte}")
         while compte > 0:
             if not self._capteur_ligne.lire_donnee():
-                print(f"Tour terminé. Tours restants : {compte - 1}")
                 compte -= 1
-                time.sleep(2)  # Pause pour éviter de détecter la même ligne plusieurs fois
+                time.sleep(2)
         self.arreter_voiture()
 
     def course(self, nb_tour):
+        """
+        Lance une course avec détection des collisions, suivi de mur et comptage des tours.
 
-        # Thread pour détecter les collisions et éviter les obstacles
+        :param nb_tour: Nombre de tours à effectuer.
+        """
         thread_collision = Thread(target=self.detecter_collision)
-
-        # Thread pour compter les tours
         thread_tours = Thread(target=self.compteur_tour, args=(nb_tour,))
-
         thread_mur = Thread(target=self.suivre_mur, args=("droite",))
 
-        # Démarrage des threads
         thread_collision.start()
         thread_tours.start()
         thread_mur.start()
 
-        # Attente de la fin des threads
         thread_collision.join()
         thread_tours.join()
         thread_mur.join()
 
 
-# Création de l'objet voiture et démarrage de la course
 voiture = Voiture("Vroum-Mobile")
 voiture.course(3)
