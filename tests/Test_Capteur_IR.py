@@ -4,6 +4,10 @@ from classes.Capteur_IR import Capteur_IR
 
 
 class Test_Capteur_IR(unittest.TestCase):
+    """
+    Test Unitaires concernant la classe Capteur_IR qui représente le capteur Infra rouge qui nous permet de gérer
+    la détection de la ligne d'arrivée sur le module Voiture. 
+    """
 
     @patch('classes.Capteur_IR.DigitalInputDevice')
     def test_lire_donnee_aucune_ligne(self, MockDigitalInputDevice):
