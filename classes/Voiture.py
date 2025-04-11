@@ -166,49 +166,44 @@ class Voiture:
                 self._moteur.avancer(30)
         time.sleep(0.3)
 
-        # else:
-        #     print("Obstacle trop proche, arrêt...")
-        #     self._moteur.stop()  # Arrêter si aucun espace disponible
-        #     break
-        # else:
-        #     print("Aucun obstacle détecté, avancer...")
-        #     self._servo.centrer()
-        #     self._moteur.avancer(30)  # Vitesse normale
-
-    # def eviter_obstacles(self):
-    #     if self.detecter_collision_avant() and self.detecter_collision_droite():
-    #         self._moteur.stop()
-    #         time.sleep(1)
-    #         self._moteur.reculer(-20)
-    #         time.sleep(1)
-    #         self._moteur.stop()
-    #         time.sleep(1)
-    #         self._servo.tourner_gauche()
-    #         self._moteur.avancer(20)
-    #         time.sleep(1)
-    #         self._moteur.stop()
-    #         self._servo.tourner_droite()
-    #         time.sleep(0.06)
-    #         self._servo.centrer()
-
-    #     elif self.detecter_collision_avant() and self.detecter_collision_gauche():
-    #         self._moteur.stop()
-    #         time.sleep(1)
-    #         self._moteur.reculer(-20)
-    #         time.sleep(1)
-    #         self._moteur.stop()
-    #         time.sleep(1)
-    #         self._servo.tourner_droite()
-    #         self._moteur.avancer(20)
-    #         time.sleep(1)
-    #         self._moteur.stop()
-    #         self._servo.tourner_gauche()
-    #         time.sleep(0.06)
-    #         self._servo.centrer()
-
     def aller_tout_droit(self):
         self._servo.centrer()
         self._moteur.avancer(20)
+
+    def demi_tour_en_T(self):
+        self._servo.centrer()
+        self._moteur.avancer(60)
+        time.sleep(0.3)
+        self._servo.tourner_gauche()
+        time.sleep(1)
+        self._moteur.stop()
+        self._servo.centrer()
+        time.sleep(0.1)
+        self._servo.tourner_droite()
+        time.sleep(1)
+        self._moteur.reculer()
+        time.sleep(1)
+        self._moteur.stop()
+        self._servo.centrer()
+        self._moteur.avancer()
+        time.sleep(1)
+        self._moteur.stop()
+        self._servo.desactiver_pwm()
+
+    def grand_8(self):
+        self._servo.centrer()
+        self._moteur.avancer(60)
+        time.sleep(0.5)
+        self._servo.tourner_droite()
+        time.sleep(4.5)
+        self._servo.centrer()
+        time.sleep(0.3)
+        self._servo.tourner_gauche()
+        time.sleep(3.2)
+        self._moteur.stop()
+        self._servo.centrer()
+        self._servo.desactiver_pwm()
+
 
     def arreter_voiture(self):
         self._moteur.stop()
