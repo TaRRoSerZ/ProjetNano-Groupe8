@@ -171,6 +171,40 @@ class Voiture:
                     break
         time.sleep(0.1)
 
+    def eviter_obstacles(self):
+        if self.detecter_collision_avant() and self.detecter_collision_droite():
+            self._moteur.stop()
+            time.sleep(0.1)
+            self._moteur.reculer()
+            time.sleep(0.1)
+            self._moteur.stop()
+            time.sleep(0.1)
+            self._servo.tourner_gauche()
+            self._moteur.avancer()
+            time.sleep(0.1)
+            self._moteur.stop()
+            self._servo.tourner_droite()
+            time.sleep(0.06)
+            self._servo.centrer()
+
+        elif self.detecter_collision_avant() and self.detecter_collision_gauche():
+            self._moteur.stop()
+            time.sleep(0.1)
+            self._moteur.reculer()
+            time.sleep(0.1)
+            self._moteur.stop()
+            time.sleep(0.1)
+            self._servo.tourner_droite()
+            self._moteur.avancer()
+            time.sleep(0.1)
+            self._moteur.stop()
+            self._servo.tourner_gauche()
+            time.sleep(0.06)
+            self._servo.centrer()
+
+
+
+
     def demarrer(self):
         thread_mouvement = Thread(target=self.aller_tout_droit)
         thread_capteur_ultrasons_avant = Thread(target=self.detecter_collision_avant)
