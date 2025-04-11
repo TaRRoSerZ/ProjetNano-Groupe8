@@ -1,3 +1,4 @@
+from Affichage import VoitureInterface
 from Servo_Moteur import Servo_Moteur
 from Moteur_DC import Moteur_DC
 from Capteur_Ultrasons import Capteur_Ultrasons
@@ -216,4 +217,4 @@ class Voiture:
 
 
 voiture = Voiture("Vroum-Mobile")
-voiture.course(3)
+interface = VoitureInterface(voiture)
