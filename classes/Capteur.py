@@ -14,6 +14,7 @@ class Capteur(ABC):
 
     @abstractmethod
     def lire_donnee(self):
+        """Méthode abstraite permettant à tout les capteurs d'avoir la même méthode"""
         pass
 
     @property

@@ -31,6 +31,7 @@ class Capteur_Ultrasons(Capteur):
         self._pin_trig = pin_trig
 
     def lire_donnee(self):
+        """Méthode renvoyant la distance entre le capteur et l'obstacle le plus proche"""
         try:
             distance = self._sensor.distance
             if not isinstance(distance, (int, float)):

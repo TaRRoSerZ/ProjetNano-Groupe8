@@ -9,13 +9,12 @@ class Capteur_IR(Capteur):
     Attributs :
 
     nom : Nom du capteur
-
-    pin_signal : pin servant à se connecter au Raspberry
+    pin_signal : Pin servant à se connecter au Raspberry
+    capteur : Classe préfaite DigitalInputDevice du module gpiozero
 
     Methodes :
 
-    lire_donnee() :
-        Renvoie la veleur de detection du capteur.
+    lire_donnee() : Renvoie la veleur de detection du capteur.
     """
     def __init__(self, nom, pin_signal: int):
         super().__init__(nom)
@@ -24,6 +23,7 @@ class Capteur_IR(Capteur):
 
 
     def lire_donnee(self):
+        """Méthode renvoyant true si la lumière infrarouge est réfléchie"""
         return not self._capteur.value
 
 
